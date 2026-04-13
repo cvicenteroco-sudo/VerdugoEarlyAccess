@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P4r4s1t0 — Verdugo Early Access</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+  margin:0;
+  background:#020302;
+  color:#8dff86;
+  font-family:"IBM Plex Mono","Share Tech Mono",monospace;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+
+.screen{
+  width:900px;
+  max-width:95%;
+  height:520px;
+  background:#000;
+  border:1px solid rgba(141,255,134,.15);
+  box-shadow:0 0 50px rgba(0,255,120,.15);
+  position:relative;
+  overflow:hidden;
+  padding:40px;
+}
+
+.center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  text-align:center;
+}
+
+.hidden{
+  display:none;
+}
+
+.ascii{
+  font-size:12px;
+  line-height:1.05;
+  white-space:pre;
+  text-shadow:0 0 10px rgba(141,255,134,.25);
+  animation:glitch 2s infinite;
+}
+
+.title{
+  font-size:34px;
+  letter-spacing:2px;
+}
+
+.subtitle{
+  margin-top:10px;
+  opacity:.8;
+}
+
+.instructions{
+  text-align:left;
+  max-width:420px;
+  margin:auto;
+  line-height:1.7;
+  font-size:18px;
+}
+
+.step{
+  margin-bottom:8px;
+}
+
+button{
+  margin-top:30px;
+  padding:12px 20px;
+  background:transparent;
+  border:1px solid #8dff86;
+  color:#8dff86;
+  font-family:inherit;
+  font-size:16px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  background:#8dff86;
+  color:#000;
+}
+
+.video iframe{
+  width:100%;
+  height:420px;
+  border:none;
+}
+
+@keyframes glitch{
+  0%{transform:translate(0)}
+  20%{transform:translate(-1px,1px)}
+  40%{transform:translate(1px,-1px)}
+  60%{transform:translate(-1px,0)}
+  80%{transform:translate(1px,1px)}
+  100%{transform:translate(0)}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+<!-- SCREEN 1 -->
+<div id="s1" class="center">
+<pre class="ascii">
+██████╗ ██╗  ██╗██████╗  ██╗  ██╗███████╗██╗████████╗ ██████╗ 
+██╔══██╗██║  ██║██╔══██╗ ██║  ██║██╔════╝██║╚══██╔══╝██╔═══██╗
+██████╔╝███████║██████╔╝ ███████║███████╗██║   ██║   ██║   ██║
+██╔═══╝ ╚════██║██╔══██╗ ╚════██║╚════██║██║   ██║   ██║   ██║
+██║          ██║██║  ██║      ██║███████║██║   ██║   ╚██████╔╝
+╚═╝          ╚═╝╚═╝  ╚═╝      ╚═╝╚══════╝╚═╝   ╚═╝    ╚═════╝
+</pre>
+</div>
+
+<!-- SCREEN 2 -->
+<div id="s2" class="center hidden">
+<div>
+<pre class="ascii">██╗   ██╗███████╗██████╗ ██████╗ ██╗   ██╗ ██████╗  ██████╗ 
+██║   ██║██╔════╝██╔══██╗██╔══██╗██║   ██║██╔════╝ ██╔═══██╗
+██║   ██║█████╗  ██████╔╝██║  ██║██║   ██║██║  ███╗██║   ██║
+╚██╗ ██╔╝██╔══╝  ██╔══██╗██║  ██║██║   ██║██║   ██║██║   ██║
+ ╚████╔╝ ███████╗██║  ██║██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝</pre>
+<div class="subtitle">EARLY ACCESS</div>
+</div>
+</div>
+
+<!-- SCREEN 3 -->
+<div id="s3" class="center hidden">
+<div class="instructions">
+
+<strong>PROTOCOLO DE ACCESO</strong>
+
+<div class="step">01 — Haz pre‑save del lanzamiento<br>
+<a href="https://recordu.lnk.to/Verdugo" target="_blank" style="color:#8dff86;">( Click Aqui )</a></div>
+
+<div class="step">02 — Mira el video de VERDUGO</div>
+
+<div class="step">03 — Comparte tu reacción en Instagram y etiqueta<br>
+<strong>@p4r4s1t0music</strong></div>
+
+<button onclick="showVideo()">CONTINUAR</button>
+
+</div>
+</div>
+
+<!-- SCREEN 4 VIDEO -->
+<div id="s4" class="video hidden">
+
+<iframe
+  src="https://www.youtube-nocookie.com/embed/Iwfas-GxFKo?rel=0"
+  title="VERDUGO Early Access"
+  loading="lazy"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>
+
+<div style="margin-top:14px;font-size:13px;opacity:.7;text-align:center;">
+  If playback fails, open directly on YouTube:<br>
+  <a href="https://www.youtube.com/watch?v=Iwfas-GxFKo" target="_blank" rel="noopener noreferrer" style="color:#8dff86;">
+    Watch on YouTube
+  </a>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+setTimeout(()=>{
+  document.getElementById("s1").classList.add("hidden")
+  document.getElementById("s2").classList.remove("hidden")
+},2500)
+
+setTimeout(()=>{
+  document.getElementById("s2").classList.add("hidden")
+  document.getElementById("s3").classList.remove("hidden")
+},4500)
+
+function showVideo(){
+  document.getElementById("s3").classList.add("hidden")
+  document.getElementById("s4").classList.remove("hidden")
+}
+
+</script>
+
+</body>
+</html>
