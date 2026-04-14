@@ -54,7 +54,7 @@ html,body{
   z-index:2;
 }
 .panel{position:relative;z-index:5;min-height:100%}
-.center{display:flex;align-items:center;justify-content:center;height:100%;text-align:center}
+.center{display:flex;align-items:center;justify-content:center;height:100%;text-align:center;flex-direction:column}
 .hidden{display:none!important}
 .ascii{
   font-size:clamp(7px,1vw,12px);
@@ -64,6 +64,21 @@ html,body{
   color:#a8ff9f;
   text-shadow:0 0 10px rgba(141,255,134,.25),1px 0 rgba(255,0,80,.10),-1px 0 rgba(0,255,255,.10);
   animation:glitch 2s infinite;
+}
+.typed-wrap{display:flex;align-items:center;justify-content:center;width:100%;min-height:220px}
+.typed{
+  font-size:clamp(18px,4.5vw,54px);
+  line-height:1.05;
+  color:var(--green-soft);
+  text-shadow:0 0 12px rgba(141,255,134,.24),1px 0 rgba(255,0,80,.12),-1px 0 rgba(0,255,255,.12);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  word-break:break-word;
+}
+.typed.cursoring::after{
+  content:"_";
+  margin-left:4px;
+  animation:blink 1s infinite;
 }
 .title{font-size:clamp(24px,3vw,38px);letter-spacing:2px;text-transform:uppercase;color:var(--green-soft)}
 .subtitle{margin-top:10px;opacity:.85;font-size:clamp(14px,1.5vw,18px)}
@@ -149,23 +164,17 @@ button:active{transform:translateY(1px)}
 
   <div class="panel">
     <section id="s1" class="center">
-      <pre class="ascii">██████╗ ██╗  ██╗██████╗  ██╗  ██╗███████╗██╗████████╗ ██████╗ 
-██╔══██╗██║  ██║██╔══██╗ ██║  ██║██╔════╝██║╚══██╔══╝██╔═══██╗
-██████╔╝███████║██████╔╝ ███████║███████╗██║   ██║   ██║   ██║
-██╔═══╝ ╚════██║██╔══██╗ ╚════██║╚════██║██║   ██║   ██║   ██║
-██║          ██║██║  ██║      ██║███████║██║   ██║   ╚██████╔╝
-╚═╝          ╚═╝╚═╝  ╚═╝      ╚═╝╚══════╝╚═╝   ╚═╝    ╚═════╝</pre>
+      <div class="typed-wrap">
+        <div class="typed cursoring" id="typedP"></div>
+      </div>
     </section>
 
     <section id="s2" class="center hidden">
-      <div>
-        <pre class="ascii">██╗   ██╗███████╗██████╗ ██████╗ ██╗   ██╗ ██████╗  ██████╗ 
-██║   ██║██╔════╝██╔══██╗██╔══██╗██║   ██║██╔════╝ ██╔═══██╗
-██║   ██║█████╗  ██████╔╝██║  ██║██║   ██║██║  ███╗██║   ██║
-╚██╗ ██╔╝██╔══╝  ██╔══██╗██║  ██║██║   ██║██║   ██║██║   ██║
- ╚████╔╝ ███████╗██║  ██║██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝
-  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝</pre>
-        <div class="subtitle">EARLY ACCESS</div>
+      <div class="typed-wrap">
+        <div>
+          <div class="typed cursoring" id="typedV"></div>
+          <div class="subtitle hidden" id="eaLabel">EARLY ACCESS</div>
+        </div>
       </div>
     </section>
 
@@ -216,6 +225,9 @@ const screens = {
 };
 const flash = document.getElementById('flash');
 const termIds = ['t1','t2','t3','t4','t5','t6','t7','t8','actions','micro'];
+const typedP = document.getElementById('typedP');
+const typedV = document.getElementById('typedV');
+const eaLabel = document.getElementById('eaLabel');
 const unlockBtn = document.getElementById('unlockBtn');
 const gateMsg = document.getElementById('gateMsg');
 const videoWrap = document.getElementById('videoWrap');
@@ -249,17 +261,41 @@ function typeText(el, text, speed = 28, done){
   };
   tick();
 }
+function typeAscii(el, art, speed = 6, done){
+  el.textContent = '';
+  let i = 0;
+  const tick = () => {
+    if(i <= art.length){
+      el.textContent = art.slice(0, i);
+      i++;
+      setTimeout(tick, speed);
+    } else if(done){
+      done();
+    }
+  };
+  tick();
+}
+
+const pText = 'p4r4s1t0';
+const vText = 'verdugo';
+
+typeText(typedP, pText, 120);
 
 setTimeout(() => {
+  typedP.classList.remove('cursoring');
   triggerFlash();
   swap('s1','s2');
-}, 2100);
+  typeText(typedV, vText, 110, () => {
+    typedV.classList.remove('cursoring');
+    eaLabel.classList.remove('hidden');
+  });
+}, 2300);
 
 setTimeout(() => {
   triggerFlash();
   swap('s2','s3');
   showTerms();
-}, 4200);
+}, 4700);
 
 unlockBtn.addEventListener('click', () => {
   triggerFlash();
