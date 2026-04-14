@@ -1,386 +1,285 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>P4r4s1t0 — Verdugo Early Access</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#020302;
-      --panel:#000;
-      --green:#8dff86;
-      --green-soft:#d7ffd4;
-      --line:rgba(141,255,134,.16);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P4r4s1t0 — Verdugo Early Access</title>
 
-    *{box-sizing:border-box}
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    html,body{
-      margin:0;
-      background:radial-gradient(circle at top, rgba(0,255,120,.08), transparent 28%), var(--bg);
-      color:var(--green);
-      font-family:"IBM Plex Mono","Share Tech Mono",monospace;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      overflow-x:hidden;
-      overflow-y:auto;
-    }
+<style>
+:root{
+  --bg:#020302;
+  --panel:#000;
+  --green:#8dff86;
+  --green-soft:#d7ffd4;
+  --line:rgba(141,255,134,.16);
+}
 
-    .screen{
-      width:min(980px,95vw);
-      min-height:min(640px,92vh);
-      background:var(--panel);
-      border:1px solid var(--line);
-      box-shadow:0 0 50px rgba(0,255,120,.14), inset 0 0 30px rgba(141,255,134,.03);
-      position:relative;
-      overflow:hidden;
-      padding:clamp(22px,3vw,40px);
-    }
+*{box-sizing:border-box}
 
-    .scanlines,.noise,.vignette{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-    }
+html,body{
+  margin:0;
+  background:radial-gradient(circle at top, rgba(0,255,120,.08), transparent 28%), var(--bg);
+  color:var(--green);
+  font-family:"IBM Plex Mono","Share Tech Mono",monospace;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
 
-    .scanlines{
-      background:repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,.035),
-        rgba(255,255,255,.035) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      opacity:.35;
-      z-index:4;
-    }
+.screen{
+  width:min(980px,95vw);
+  min-height:min(640px,92vh);
+  background:var(--panel);
+  border:1px solid var(--line);
+  box-shadow:0 0 50px rgba(0,255,120,.14), inset 0 0 30px rgba(141,255,134,.03);
+  position:relative;
+  overflow:hidden;
+  padding:clamp(22px,3vw,40px);
+}
 
-    .noise{
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,.22) .7px, transparent 1px),
-        radial-gradient(circle at 70% 60%, rgba(255,255,255,.18) .7px, transparent 1px),
-        radial-gradient(circle at 30% 80%, rgba(255,255,255,.14) .8px, transparent 1.2px);
-      background-size:120px 120px,140px 140px,170px 170px;
-      opacity:.08;
-      animation:noiseShift .3s steps(2) infinite;
-      z-index:1;
-    }
+.scanlines,.noise,.vignette{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
 
-    .vignette{
-      background:radial-gradient(circle, transparent 45%, rgba(0,0,0,.45) 100%);
-      z-index:2;
-    }
+.scanlines{
+  background:repeating-linear-gradient(to bottom, rgba(255,255,255,.035), rgba(255,255,255,.035) 1px, transparent 2px, transparent 4px);
+  opacity:.35;
+  z-index:4;
+}
 
-    .panel{
-      position:relative;
-      z-index:5;
-      min-height:100%;
-    }
+.noise{
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.22) .7px, transparent 1px),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.18) .7px, transparent 1px),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.14) .8px, transparent 1.2px);
+  background-size:120px 120px,140px 140px,170px 170px;
+  opacity:.08;
+  animation:noiseShift .3s steps(2) infinite;
+}
 
-    .center{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      height:100%;
-      text-align:center;
-      flex-direction:column;
-    }
+.vignette{
+  background:radial-gradient(circle, transparent 45%, rgba(0,0,0,.45) 100%);
+}
 
-    .hidden{
-      display:none !important;
-    }
+.panel{position:relative;z-index:5}
 
-    .typed-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:100%;
-      min-height:220px;
-      overflow:hidden;
-      padding:0 8px;
-    }
+.center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  text-align:center;
+  flex-direction:column;
+}
 
-    .typed{
-      font-size:clamp(7px,1vw,12px);
-      line-height:1.05;
-      color:var(--green-soft);
-      white-space:pre;
-      text-align:center;
-    }
+.hidden{display:none!important}
 
-    .subtitle{
-      margin-top:10px;
-      opacity:.85;
-      font-size:clamp(14px,1.5vw,18px);
-    }
+.typed{
+  font-size:clamp(20px,4vw,40px);
+  color:var(--green-soft);
+}
 
-    .terminal{
-      max-width:560px;
-      margin:auto;
-      text-align:left;
-      font-size:clamp(14px,1.4vw,18px);
-      line-height:1.7;
-    }
+.subtitle{
+  margin-top:10px;
+  opacity:.85;
+}
 
-    .term-line{
-      opacity:0;
-      min-height:1.5em;
-      white-space:pre-wrap;
-    }
+.terminal{
+  max-width:560px;
+  margin:auto;
+  text-align:left;
+  font-size:16px;
+  line-height:1.7;
+}
 
-    .term-line.show{
-      opacity:1;
-    }
+.term-line{
+  opacity:0;
+  min-height:1.5em;
+}
 
-    .prompt{
-      color:var(--green-soft);
-    }
+.term-line.show{opacity:1}
 
-    .link{
-      color:var(--green);
-      text-decoration:none;
-      border-bottom:1px solid rgba(141,255,134,.4);
-      white-space:nowrap;
-      font-size:.95em;
-    }
+.link{
+  color:var(--green);
+  text-decoration:none;
+  border-bottom:1px solid rgba(141,255,134,.4);
+}
 
-    .actions{
-      margin-top:26px;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
+button{
+  margin-top:20px;
+  padding:14px 22px;
+  background:transparent;
+  border:1px solid var(--green);
+  color:var(--green);
+  cursor:pointer;
+}
 
-    button{
-      padding:14px 22px;
-      background:transparent;
-      border:1px solid var(--green);
-      color:var(--green);
-      font-family:inherit;
-      font-size:16px;
-      cursor:pointer;
-      transition:.18s ease;
-    }
+.video-shell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
 
-    button:hover{
-      background:var(--green);
-      color:#000;
-    }
+.video-wrap{
+  width:100%;
+  max-width:800px;
+}
 
-    .video-shell{
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:16px;
-      text-align:center;
-    }
+.video-wrap iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border:none;
+}
 
-    .video-wrap{
-      width:100%;
-      max-width:800px;
-      border:1px solid var(--line);
-      box-shadow:0 0 20px rgba(141,255,134,.08);
-    }
+.video-note{
+  font-size:14px;
+  opacity:.75;
+}
 
-    .video-wrap iframe{
-      width:100%;
-      aspect-ratio:16/9;
-      border:none;
-      display:block;
-    }
-
-    .video-note{
-      font-size:14px;
-      opacity:.75;
-      line-height:1.6;
-      margin-top:10px;
-    }
-
-    .cursor{
-      display:inline-block;
-      width:10px;
-      height:1.1em;
-      background:var(--green);
-      margin-left:6px;
-      animation:blink 1s infinite;
-    }
-
-    @keyframes blink{
-      0%,100%{opacity:1}
-      50%{opacity:0}
-    }
-
-    @keyframes noiseShift{
-      0%{transform:translate(0)}
-      50%{transform:translate(1px,-1px)}
-      100%{transform:translate(0)}
-    }
-
-    @media(max-width:700px){
-      .screen{
-        min-height:100vh;
-        width:100vw;
-        border:none;
-      }
-    }
-  </style>
+@keyframes noiseShift{
+  0%{transform:translate(0)}
+  50%{transform:translate(1px,-1px)}
+  100%{transform:translate(0)}
+}
+</style>
 </head>
+
 <body>
-  <div class="screen">
-    <div class="noise"></div>
-    <div class="vignette"></div>
-    <div class="scanlines"></div>
+<div class="screen">
+<div class="noise"></div>
+<div class="vignette"></div>
+<div class="scanlines"></div>
 
-    <div class="panel">
+<div class="panel">
 
-      <section id="s1" class="center">
-        <div class="typed-wrap">
-          <div class="typed" id="typedP"></div>
-        </div>
-      </section>
+<!-- SCREEN 1 -->
+<section id="s1" class="center">
+<div class="typed" id="typedP"></div>
+</section>
 
-      <section id="s2" class="center hidden">
-        <div class="typed-wrap">
-          <div>
-            <div class="typed" id="typedV"></div>
-            <div class="subtitle hidden" id="eaLabel">EARLY ACCESS</div>
-          </div>
-        </div>
-      </section>
+<!-- SCREEN 2 -->
+<section id="s2" class="center hidden">
+<div>
+<div class="typed" id="typedV"></div>
+<div class="subtitle hidden" id="eaLabel">EARLY ACCESS</div>
+</div>
+</section>
 
-      <section id="s3" class="center hidden">
-        <div class="terminal">
-          <div id="t1" class="term-line"><span class="prompt">&gt;</span> system: p4r4s1t0</div>
-          <div id="t2" class="term-line"><span class="prompt">&gt;</span> build: VERDUGO_early_access</div>
-          <div id="t3" class="term-line"><span class="prompt">&gt;</span> PROTOCOLO DE ACCESO</div>
-          <div id="t4" class="term-line"><span class="prompt">01</span> Haz pre-save <a class="link" href="https://recordu.lnk.to/Verdugo" target="_blank" rel="noopener noreferrer">( Click&nbsp;Aqui )</a></div>
-          <div id="t5" class="term-line"><span class="prompt">02</span> Mira el video</div>
-          <div id="t6" class="term-line"><span class="prompt">03</span> Comparte tu reacción @p4r4s1t0music</div>
-          <div id="t7" class="term-line"><span class="prompt">&gt;</span> verifying user...</div>
-          <div id="t8" class="term-line"><span class="prompt">&gt;</span> access ready<span class="cursor"></span></div>
-          <div id="countdownLine" class="term-line"><span class="prompt">&gt;</span> early access window:</div>
-          <div id="countdownTimer" class="term-line"></div>
-          <div id="actions" class="actions term-line">
-            <button id="unlockBtn">UNLOCK ACCESS</button>
-          </div>
-        </div>
-      </section>
+<!-- SCREEN 3 -->
+<section id="s3" class="center hidden">
+<div class="terminal">
 
-      <section id="s4" class="video-shell hidden">
-        <div id="videoWrap" class="video-wrap">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/Iwfas-GxFKo?modestbranding=1&controls=1"
-            title="VERDUGO Early Access"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>
+<div id="t1" class="term-line">&gt; system: p4r4s1t0</div>
+<div id="t2" class="term-line">&gt; build: VERDUGO_early_access</div>
+<div id="t3" class="term-line">&gt; PROTOCOLO DE ACCESO</div>
 
-        <div class="video-note">
-          &gt; comparte y etiqueta a <strong>@p4r4s1t0music</strong> en instagram
-        </div>
-      </section>
+<div id="t4" class="term-line">01 Haz pre-save <a class="link" href="https://recordu.lnk.to/Verdugo" target="_blank">( Click Aqui )</a></div>
+<div id="t5" class="term-line">02 Mira el video</div>
+<div id="t6" class="term-line">03 Comparte tu reacción @p4r4s1t0music</div>
 
-    </div>
-  </div>
+<div id="t7" class="term-line">&gt; verifying user...</div>
+<div id="t8" class="term-line">&gt; access ready</div>
 
-  <script>
-    const termIds = [
-      't1','t2','t3','t4','t5','t6','t7','t8',
-      'countdownLine','countdownTimer','actions'
-    ];
+<div id="countdownLine" class="term-line">&gt; early access window:</div>
+<div id="countdownTimer" class="term-line"></div>
 
-    function showTerms(){
-      termIds.forEach((id, i) => {
-        setTimeout(() => {
-          document.getElementById(id).classList.add('show');
-        }, 250 * i);
-      });
+<div id="actions" class="term-line">
+<button id="unlockBtn">UNLOCK ACCESS</button>
+</div>
+
+</div>
+</section>
+
+<!-- SCREEN 4 -->
+<section id="s4" class="video-shell hidden">
+
+<div class="video-wrap">
+<iframe
+src="https://www.youtube-nocookie.com/embed/Iwfas-GxFKo?rel=0&modestbranding=1"
+allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen>
+</iframe>
+</div>
+
+<div class="video-note">
+&gt; comparte y etiqueta a <strong>@p4r4s1t0music</strong> en instagram
+</div>
+
+</section>
+
+</div>
+</div>
+
+<script>
+const termIds=['t1','t2','t3','t4','t5','t6','t7','t8','countdownLine','countdownTimer','actions'];
+
+function showTerms(){
+  termIds.forEach((id,i)=>{
+    setTimeout(()=>{
+      document.getElementById(id).classList.add('show');
+    },250*i);
+  });
+}
+
+function type(el,text,speed){
+  let i=0;
+  const t=setInterval(()=>{
+    el.textContent=text.slice(0,i++);
+    if(i>text.length) clearInterval(t);
+  },speed);
+}
+
+type(document.getElementById('typedP'),'p4r4s1t0',120);
+
+setTimeout(()=>{
+  s1.classList.add('hidden');
+  s2.classList.remove('hidden');
+  type(document.getElementById('typedV'),'VERDUGO',120);
+  setTimeout(()=>eaLabel.classList.remove('hidden'),1000);
+},3500);
+
+setTimeout(()=>{
+  s2.classList.add('hidden');
+  s3.classList.remove('hidden');
+  showTerms();
+},7000);
+
+function startCountdown(){
+  const target=new Date('2026-04-15T00:00:00');
+
+  function update(){
+    const diff=target-new Date();
+    if(diff<=0){
+      countdownTimer.textContent='> expired';
+      return;
     }
 
-    function typeAscii(el, art, speed = 2, done){
-      let i = 0;
-      el.textContent = '';
-      const tick = () => {
-        el.textContent = art.slice(0, i++);
-        if(i <= art.length){
-          setTimeout(tick, speed);
-        } else if(done){
-          done();
-        }
-      };
-      tick();
-    }
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor(diff/60000%60);
+    const s=Math.floor(diff/1000%60);
 
-    const pText = `██████╗ ██╗  ██╗██████╗  ██╗  ██╗███████╗██╗████████╗ ██████╗ 
-██╔══██╗██║  ██║██╔══██╗ ██║  ██║██╔════╝██║╚══██╔══╝██╔═══██╗
-██████╔╝███████║██████╔╝ ███████║███████╗██║   ██║   ██║   ██║
-██╔═══╝ ╚════██║██╔══██╗ ╚════██║╚════██║██║   ██║   ██║   ██║
-██║          ██║██║  ██║      ██║███████║██║   ██║   ╚██████╔╝
-╚═╝          ╚═╝╚═╝  ╚═╝      ╚═╝╚══════╝╚═╝   ╚═╝    ╚═════╝`;
+    countdownTimer.textContent=`> ${h}h ${m}m ${s}s`;
+  }
 
-    const vText = `██╗   ██╗███████╗██████╗ ██████╗ ██╗   ██╗ ██████╗  ██████╗ 
-██║   ██║██╔════╝██╔══██╗██╔══██╗██║   ██║██╔════╝ ██╔═══██╗
-██║   ██║█████╗  ██████╔╝██║  ██║██║   ██║██║  ███╗██║   ██║
-╚██╗ ██╔╝██╔══╝  ██╔══██╗██║  ██║██║   ██║██║   ██║██║   ██║
- ╚████╔╝ ███████╗██║  ██║██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝
-  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝`;
+  update();
+  setInterval(update,1000);
+}
 
-    typeAscii(document.getElementById('typedP'), pText, 2);
+setTimeout(startCountdown,7000);
 
-    setTimeout(() => {
-      document.getElementById('s1').classList.add('hidden');
-      document.getElementById('s2').classList.remove('hidden');
+unlockBtn.onclick=()=>{
+  s3.classList.add('hidden');
+  s4.classList.remove('hidden');
+};
+</script>
 
-      typeAscii(document.getElementById('typedV'), vText, 2, () => {
-        document.getElementById('eaLabel').classList.remove('hidden');
-      });
-    }, 5200);
-
-    setTimeout(() => {
-      document.getElementById('s2').classList.add('hidden');
-      document.getElementById('s3').classList.remove('hidden');
-      showTerms();
-    }, 9800);
-
-    function startCountdown(){
-      const target = new Date('2026-04-15T00:00:00-06:00');
-
-      function update(){
-        const now = new Date();
-        const diff = target - now;
-
-        if(diff <= 0){
-          document.getElementById('countdownTimer').textContent = '> expired';
-          return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-
-        document.getElementById('countdownTimer').textContent =
-          `> ${days}d ${hours}h ${minutes}m ${seconds}s`;
-      }
-
-      update();
-      setInterval(update, 1000);
-    }
-
-    setTimeout(startCountdown, 9800);
-
-    document.getElementById('unlockBtn').addEventListener('click', () => {
-      document.getElementById('s3').classList.add('hidden');
-      document.getElementById('s4').classList.remove('hidden');
-    });
-  </script>
 </body>
 </html>
