@@ -14,8 +14,7 @@
   --line:rgba(141,255,134,.16);
 }
 *{box-sizing:border-box}
-html,body{height:100%}
-body{
+html,body{
   margin:0;
   background:radial-gradient(circle at top, rgba(0,255,120,.08), transparent 28%), var(--bg);
   color:var(--green);
@@ -24,11 +23,12 @@ body{
   align-items:center;
   justify-content:center;
   min-height:100vh;
-  overflow:hidden;
+  overflow-x:hidden;
+  overflow-y:auto;
 }
 .screen{
   width:min(980px,95vw);
-  height:min(640px,92vh);
+  min-height:min(640px,92vh);
   background:var(--panel);
   border:1px solid var(--line);
   box-shadow:0 0 50px rgba(0,255,120,.14), inset 0 0 30px rgba(141,255,134,.03);
@@ -53,7 +53,7 @@ body{
   background:radial-gradient(circle, transparent 45%, rgba(0,0,0,.45) 100%);
   z-index:2;
 }
-.panel{position:relative;z-index:5;height:100%}
+.panel{position:relative;z-index:5;min-height:100%}
 .center{display:flex;align-items:center;justify-content:center;height:100%;text-align:center}
 .hidden{display:none!important}
 .ascii{
@@ -88,10 +88,23 @@ button{
 button:hover{background:var(--green);color:#000;box-shadow:0 0 18px rgba(141,255,134,.22)}
 button:active{transform:translateY(1px)}
 .micro{margin-top:14px;font-size:13px;opacity:.62;line-height:1.6}
-.video-shell{height:100%;display:flex;flex-direction:column;justify-content:center}
+.video-shell{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:16px;
+}
 .gate-msg{font-size:clamp(16px,1.8vw,22px);margin-bottom:18px;min-height:3em}
 .video-wrap{border:1px solid var(--line);box-shadow:0 0 24px rgba(141,255,134,.08);background:#050505}
-.video-wrap iframe{display:block;width:100%;height:min(56vw,420px);min-height:220px;border:none}
+.video-wrap iframe{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  height:auto;
+  min-height:220px;
+  border:none;
+}
 .after-video{margin-top:14px;font-size:13px;opacity:.72;line-height:1.7}
 .cursor{display:inline-block;width:10px;height:1.1em;background:var(--green);margin-left:6px;vertical-align:middle;animation:blink 1s infinite}
 .glitch-flash{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:0;background:linear-gradient(90deg, transparent, rgba(141,255,134,.08), transparent)}
@@ -101,7 +114,26 @@ button:active{transform:translateY(1px)}
 @keyframes noiseShift{0%{transform:translate(0,0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(1px,1px)}100%{transform:translate(0,0)}}
 @keyframes flash{0%{opacity:0;transform:translateY(-4%)}40%{opacity:1}100%{opacity:0;transform:translateY(4%)}}
 @media (max-width:700px){
-  .screen{height:100vh;width:100vw;border:none;padding:22px}
+  body{
+    align-items:flex-start;
+  }
+  .screen{
+    min-height:100vh;
+    width:100vw;
+    border:none;
+    padding:22px;
+  }
+  .video-wrap iframe{
+    min-height:auto;
+    aspect-ratio:16/9;
+  }
+  .actions{
+    flex-direction:column;
+  }
+  button{
+    width:100%;
+  }
+}
   .video-wrap iframe{height:34vh}
   .actions{flex-direction:column}
   button{width:100%}
