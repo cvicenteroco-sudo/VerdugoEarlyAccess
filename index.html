@@ -65,28 +65,30 @@ html,body{
   text-shadow:0 0 10px rgba(141,255,134,.25),1px 0 rgba(255,0,80,.10),-1px 0 rgba(0,255,255,.10);
   animation:glitch 2s infinite;
 }
-.typed-wrap{display:flex;align-items:center;justify-content:center;width:100%;min-height:220px}
+.typed-wrap{display:flex;align-items:center;justify-content:center;width:100%;min-height:220px;overflow:hidden;padding:0 8px}
 .typed{
-  font-size:clamp(18px,4.5vw,54px);
+  font-size:clamp(7px,1vw,12px);
   line-height:1.05;
   color:var(--green-soft);
   text-shadow:0 0 12px rgba(141,255,134,.24),1px 0 rgba(255,0,80,.12),-1px 0 rgba(0,255,255,.12);
-  letter-spacing:2px;
-  text-transform:uppercase;
-  word-break:break-word;
+  letter-spacing:0;
+  text-transform:none;
+  white-space:pre;
+  word-break:normal;
+  overflow-wrap:normal;
+  text-align:center;
+  max-width:100%;
 }
 .typed.cursoring::after{
-  content:"_";
-  margin-left:4px;
-  animation:blink 1s infinite;
+  content:"";
 }
 .title{font-size:clamp(24px,3vw,38px);letter-spacing:2px;text-transform:uppercase;color:var(--green-soft)}
 .subtitle{margin-top:10px;opacity:.85;font-size:clamp(14px,1.5vw,18px)}
-.terminal{max-width:560px;margin:auto;text-align:left;font-size:clamp(15px,1.6vw,19px);line-height:1.75}
+.terminal{max-width:560px;margin:auto;text-align:left;font-size:clamp(14px,1.4vw,18px);line-height:1.7}
 .term-line{opacity:0;min-height:1.5em;white-space:pre-wrap}
 .term-line.show{opacity:1}
 .prompt{color:var(--green-soft)}
-.link{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(141,255,134,.4)}
+.link{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(141,255,134,.4);white-space:nowrap;font-size:.95em}
 .link:hover{background:rgba(141,255,134,.08)}
 .actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
 button{
@@ -129,6 +131,8 @@ button:active{transform:translateY(1px)}
 @keyframes noiseShift{0%{transform:translate(0,0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(1px,1px)}100%{transform:translate(0,0)}}
 @keyframes flash{0%{opacity:0;transform:translateY(-4%)}40%{opacity:1}100%{opacity:0;transform:translateY(4%)}}
 @media (max-width:700px){
+  .terminal{font-size:14px}
+  .link{font-size:.9em}
   body{
     align-items:flex-start;
   }
@@ -183,7 +187,7 @@ button:active{transform:translateY(1px)}
         <div id="t1" class="term-line"><span class="prompt">&gt;</span> system: p4r4s1t0</div>
         <div id="t2" class="term-line"><span class="prompt">&gt;</span> build: VERDUGO_early_access</div>
         <div id="t3" class="term-line"><span class="prompt">&gt;</span> PROTOCOLO DE ACCESO</div>
-        <div id="t4" class="term-line"><span class="prompt">01</span> Haz pre-save del lanzamiento <a class="link" href="https://recordu.lnk.to/Verdugo" target="_blank" rel="noopener noreferrer">( Click Aqui )</a></div>
+        <div id="t4" class="term-line"><span class="prompt">01</span> Haz pre-save del lanzamiento <a class="link" href="https://recordu.lnk.to/Verdugo" target="_blank" rel="noopener noreferrer">( Click&nbsp;Aqui )</a></div>
         <div id="t5" class="term-line"><span class="prompt">02</span> Mira el video de VERDUGO</div>
         <div id="t6" class="term-line"><span class="prompt">03</span> Comparte tu reacción en Instagram y etiqueta a <strong>@p4r4s1t0music</strong></div>
         <div id="t7" class="term-line"><span class="prompt">&gt;</span> verifying user...</div>
@@ -276,16 +280,27 @@ function typeAscii(el, art, speed = 6, done){
   tick();
 }
 
-const pText = 'p4r4s1t0';
-const vText = 'verdugo';
+const pText = `██████╗ ██╗  ██╗██████╗  ██╗  ██╗███████╗██╗████████╗ ██████╗ 
+██╔══██╗██║  ██║██╔══██╗ ██║  ██║██╔════╝██║╚══██╔══╝██╔═══██╗
+██████╔╝███████║██████╔╝ ███████║███████╗██║   ██║   ██║   ██║
+██╔═══╝ ╚════██║██╔══██╗ ╚════██║╚════██║██║   ██║   ██║   ██║
+██║          ██║██║  ██║      ██║███████║██║   ██║   ╚██████╔╝
+╚═╝          ╚═╝╚═╝  ╚═╝      ╚═╝╚══════╝╚═╝   ╚═╝    ╚═════╝`;
 
-typeText(typedP, pText, 120);
+const vText = `██╗   ██╗███████╗██████╗ ██████╗ ██╗   ██╗ ██████╗  ██████╗ 
+██║   ██║██╔════╝██╔══██╗██╔══██╗██║   ██║██╔════╝ ██╔═══██╗
+██║   ██║█████╗  ██████╔╝██║  ██║██║   ██║██║  ███╗██║   ██║
+╚██╗ ██╔╝██╔══╝  ██╔══██╗██║  ██║██║   ██║██║   ██║██║   ██║
+ ╚████╔╝ ███████╗██║  ██║██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝`;
+
+typeAscii(typedP, pText, 2);
 
 setTimeout(() => {
   typedP.classList.remove('cursoring');
   triggerFlash();
   swap('s1','s2');
-  typeText(typedV, vText, 110, () => {
+  typeAscii(typedV, vText, 2, () => {
     typedV.classList.remove('cursoring');
     eaLabel.classList.remove('hidden');
   });
